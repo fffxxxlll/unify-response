@@ -10,11 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
+/**
+ *
+ * 定义拦截器，拦截带有ResponseResult注解的方法或类
+ * @deprecated
+ *
+ * */
+
 @Slf4j
 @Component
 public class ResponseResultInterceptor implements HandlerInterceptor {
 
-    public static final String RESPONSE_RESULT_ANN = "RESPONSE";
+    public static final String RESPONSE_RESULT_ANN = "RESPONSE_RESULT_ANNO";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

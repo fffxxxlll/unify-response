@@ -1,6 +1,7 @@
 package com.study.unify.interceptor;
 
 import com.study.unify.annotation.ResponseResult;
+import com.study.unify.common.ErrorResult;
 import com.study.unify.common.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ResponseResultHandler implements ResponseBodyAdvice<Object> {
 
-    public static final String RESPONSE_RESULT_ANN = "RESPONSE";
+    public static final String RESPONSE_RESULT_ANN = "RESPONSE_RESULT_ANNO";
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
@@ -33,6 +34,10 @@ public class ResponseResultHandler implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         log.info("进入 返回体 重写格式 处理中。。。");
+        if (body instanceof ErrorResult) {
+            ErrorResult errorResult = (ErrorResult) body;
+            return Result.failure(errorResult.getResultCode());
+        }
         return Result.success(body);
     }
 }
